@@ -189,23 +189,15 @@ function setupWindowEvents(mainWindow: BrowserWindow) {
         event.preventDefault();
 
         if (title === "Game ending in 60s") {
-            const config = getConfig();
-            if (config.inactivityNotification === true) {
-                new Notification({
-                    title: "GeForce Infinity",
-                    body: "Your game is about to end in 60 seconds!",
-                    icon: path.join(
-                        __dirname,
-                        "assets/resources/infinitylogo.png"
-                    ),
-                }).show();
-            }
-            if (
-                config.inactivityNotification === true &&
-                config.autofocus === true
-            ) {
-                mainWindow.maximize();
-            }
+            // Send a harmless key (F15 is safe and unused in games)
+            mainWindow.webContents.sendInputEvent({
+                type: "keyDown",
+                keyCode: "F15"
+            });
+            mainWindow.webContents.sendInputEvent({
+                type: "keyUp",
+                keyCode: "F15"
+            });
         }
         let gameName = title
             .replace(/^GeForce NOW - /, "")
